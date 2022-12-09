@@ -56,7 +56,6 @@
 		var r = document.querySelector(':root');
 		const queryString = window.location.search;
 		if (queryString) {
-			console.log(queryString);
 			let getParameters = queryString.split('?')[1];
 			let params = getParameters.split('&');
 			var values = [];
@@ -90,7 +89,6 @@
 		
 			iter = 0;
 			for (color of values){
-				console.log((64/values.length*iter), 0, (64/values.length*(iter+1)), 64);
 				ctx.beginPath();
 				ctx.rect((64/values.length*iter), 0, (64/values.length*(iter+1)), 64);
 				ctx.fillStyle = "#" + color;
