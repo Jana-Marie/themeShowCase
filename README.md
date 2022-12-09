@@ -9,3 +9,5 @@ I run it at [https://theme/haj.gf?](https://theme/haj.gf?081730&8e1059&017c93&fd
 Oh and it also renders favicons based on the colours given :3
 
 ![](fav.png)
+
+You may want to put the font PublicSans-Medium as .woff (`PublicSans-Medium.woff`) next to index.html
