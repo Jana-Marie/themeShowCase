@@ -41,6 +41,8 @@
 	
 	<body>
 	  	<div id="colorDescription" class="container">
+	  		<p>Missing colour or wrong formatting :c<br>have some lesbian pride flag instead!<br><br>Please use the following format:<br>https://theme.haj.gf?< colour >&< colour >&...<br>e.g. 
+<a href="https://theme.haj.gf?081730&8e1059&017c93&fd6903&f5f2de">https://theme.haj.gf?081730&8e1059&017c93&fd6903&f5f2de</a></p>
 		</div>
 	</body>
 
@@ -54,6 +56,7 @@
 		var r = document.querySelector(':root');
 		const queryString = window.location.search;
 		if (queryString) {
+			console.log(queryString);
 			let getParameters = queryString.split('?')[1];
 			let params = getParameters.split('&');
 			var values = [];
