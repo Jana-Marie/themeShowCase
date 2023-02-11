@@ -4,15 +4,14 @@
         <title>nya~ :3</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Jana Marie Hemsing">
-        <meta name="description" content="conic color theme display">
+        <meta name="description" content="Colour theme showcase">
         <meta name="keywords" content="colour, otter, showcase, renderer">
         <meta property="og:title" content="nya~">
-        <meta property="og:description" content="conic color theme display">
+        <meta property="og:description" content="Colour theme showcase">
         <meta property="og:image" content="">
         <style type="text/css">
             :root {
-              --gradient-colors: #d9d9d9 0% 23%, #eb6f92 0% 44%, #3c6f71 0% 57%, #2f333a 0% 100%;
-              --page-bg: #bf1f1f1;
+              --gradient-colors: #d62900 0% 20%, #ff9b55 20% 40%, #ffffff 40% 60%, #d461a6 60% 80%, #a50062 80% 100%;
             }
 
             @font-face {
@@ -21,46 +20,32 @@
             }
 
             html {
-                display: flex;
-                background: var(--page-bg);
-            }
-            
-            .container {
-                display: flex;
                 width: 100%;
                 height: 100%;
-                position: absolute;
-                justify-content: center;
-                align-items: center;
-                margin: auto;
+                background: linear-gradient(to right, var(--gradient-colors));
             }
 
-            .box {
-                display: block;
-                max-width: 80%;
-                max-height: 80%;
-                position: absolute;
-                aspect-ratio: 1/1;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                margin: auto;
+            .container {
+                display: flex;
+                text-align: center;
+            }
 
-                overflow: hidden;
-                background: conic-gradient(var(--gradient-colors));
-                border-radius: 5%;
-
-                filter: drop-shadow(0 0 5px);
+            p {
+                flex: 1;
+                align-self: flex-end;
+                filter: invert(1);
+                mix-blend-mode: difference;
+                text-shadow: 0px 0px 4px #FFFFFF, 0 0 4px #000000;
+                font-size: 3vw;
+                font-family: textFont;
             }
         </style>
     </head>
     
     <body>
           <div id="colorDescription" class="container">
-
-
-            <div class="box"></div>
+            <p>Missing colour or wrong formatting :c<br>have some lesbian pride flag instead!<br><br>Please use the following format:<br>https://theme.haj.gf?< colour >&< colour >&...<br>
+            e.g. <a href="https://theme.haj.gf?081730&8e1059&017c93&fd6903&f5f2de">https://theme.haj.gf?081730&8e1059&017c93&fd6903&f5f2de</a></p>
         </div>
     </body>
 
@@ -77,96 +62,63 @@
             let getParameters = queryString.split('?')[1];
             let params = getParameters.split(/&|,|-|_/);
             var values = [];
-            var bg_value;
-            let iter = 0;
-            let percent_sum = 0;
-            let percent_rem = (queryString.match(/%/g) || []).length;
-            let num_colors = params.length;
             for(let i = 0; i < params.length; i++) {
-                if(params[i].charAt(0) == '_'){
-                    if(isColor(params[i].slice(1))){
-                        r.style.setProperty('--page-bg', "#" + params[i].slice(1));
-                    }
-                    num_colors--;
+                if(isColor(params[i])){
+                    values.push(params[i]);
                 } else {
-                    let subparams = params[i].split('p');
-                    var c;
-                    var percent;
-
-                    if(subparams[1]){
-                        percent = parseInt(subparams[1]);
-                    } else {
-                        percent = (100/(num_colors-percent_rem)); // buggy
-                    }
-
-                    if(isColor(subparams[0])){
-                        c = subparams[0];
-                    } else {
-                        c = '000000'
-                    }
-
-                    percent_sum += percent;
-
-                    values.push(" #" + c + " " + "0" + 
-                                "%" + " " + percent_sum + "%");
-                    
-                    iter++;
+                    values.push('000000');
                 }
             }
 
-            var gradient = values.join();
+            var gradient = "";
+            var text = "";
+            let iter = 0;
+            for (color of values){
+                gradient = gradient + "#" + color + " " + (100/values.length*iter) + 
+                "%" + " " + (100/values.length*(iter+1)) + "%, ";
+                text += "<p>#" + color + "</p>" + "\n"
+                iter++;
+            }
+
+            gradient = gradient.slice(0, -2);
             r.style.setProperty('--gradient-colors', gradient);
+            document.getElementById("colorDescription").innerHTML = text;
 
-            //function drawAngleGradient(ctx, options){
-            //    var delta = options.endAngle - options.startAngle;
-            //    for(var angle = options.startAngle; angle < options.endAngle; angle += options.angleStep){
-            //        var t = (angle - options.startAngle) / delta;
-            //        drawLine(ctx, {
-            //            start: options.center,
-            //            end: [
-            //                options.center[0] + options.radius * Math.cos(angle),
-            //                options.center[1] + options.radius * Math.sin(angle)
-            //            ],
-            //            color: mixColors(options.startColor, options.endColor, t)
-            //        });
-            //    }
-            //}
-
-            //const favicon = document.createElement('canvas');
-            //favicon.height = 64;
-            //favicon.width = 64;
-            //const favCtx = favicon.getContext('2d');
+            const favicon = document.createElement('canvas');
+            favicon.height = 64;
+            favicon.width = 64;
+            const favCtx = favicon.getContext('2d');
         
-            //iter = 0;
-            //for (color of values){
-            //    favCtx.beginPath();
-            //    favCtx.rect((64/values.length*iter), 0, (64/values.length*(iter+1)), 64);
-            //    favCtx.fillStyle = "#" + color;
-            //    favCtx.fill();
-            //    iter++;
-            //}
+            iter = 0;
+            for (color of values){
+                favCtx.beginPath();
+                favCtx.rect((64/values.length*iter), 0, (64/values.length*(iter+1)), 64);
+                favCtx.fillStyle = "#" + color;
+                favCtx.fill();
+                iter++;
+            }
 
-            //const favLink = document.createElement('link');
-            //favLink.id = 'dynamic-favicon';
-            //favLink.rel = 'shortcut icon';
-            //favLink.href = favicon.toDataURL();
-            //document.head.appendChild(favLink);
+            const favLink = document.createElement('link');
+            favLink.id = 'dynamic-favicon';
+            favLink.rel = 'shortcut icon';
+            favLink.href = favicon.toDataURL();
+            document.head.appendChild(favLink);
 
-            //const preview = document.createElement('canvas');
-            //preview.height = 250;
-            //preview.width = 600;
-            //const preCtx = preview.getContext('2d');
+            const preview = document.createElement('canvas');
+            preview.height = 250;
+            preview.width = 600;
+            const preCtx = preview.getContext('2d');
         
-            //iter = 0;
-            //for (color of values){
-            //    preCtx.beginPath();
-            //    preCtx.rect((600/values.length*iter), 0, (600/values.length*(iter+1)), 250);
-            //    preCtx.fillStyle = "#" + color;
-            //    preCtx.fill();
-            //    iter++;
-            //}
+            iter = 0;
+            for (color of values){
+                preCtx.beginPath();
+                preCtx.rect((600/values.length*iter), 0, (600/values.length*(iter+1)), 250);
+                preCtx.fillStyle = "#" + color;
+                preCtx.fill();
+                iter++;
+            }
 
-            //document.querySelectorAll('meta[property=og\\:image]')[0].setAttribute('content', preview.toDataURL());
+            document.querySelectorAll('meta[property=og\\:image]')[0].setAttribute('content', preview.toDataURL());
         }
     </script>
 </html>
